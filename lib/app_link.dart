@@ -7,8 +7,6 @@ final _appLinks = AppLinks();
 
 typedef OnAppLinkCallback = Function(Uri uri);
 
-bool _initialUriHandled = false;
-
 class AppLinkHandler extends StatefulWidget {
   final Widget child;
   final OnAppLinkCallback onAppLink;
@@ -29,7 +27,6 @@ class _AppLinkHandlerState extends State<AppLinkHandler> {
   @override
   void initState() {
     super.initState();
-    _handleInitialUri();
     _registerIncomingLinks();
   }
 
@@ -42,22 +39,6 @@ class _AppLinkHandlerState extends State<AppLinkHandler> {
   @override
   Widget build(BuildContext context) {
     return widget.child;
-  }
-
-  Future<void> _handleInitialUri() async {
-    if (_initialUriHandled) {
-      return;
-    }
-
-    if (!mounted) {
-      return;
-    }
-
-    _initialUriHandled = true;
-    final uri = await _appLinks.getInitialAppLink();
-    if (uri != null) {
-      widget.onAppLink(uri);
-    }
   }
 
   void _registerIncomingLinks() {
